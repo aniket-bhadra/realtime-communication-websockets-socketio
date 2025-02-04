@@ -165,3 +165,36 @@ There’s no special syntax or setup required for webhooks, unlike WebSockets, w
 - **WebSockets** is best for **bidirectional, real-time communication** like **chat apps**, where a **persistent connection** is needed for instant message exchange.  
 - **Why not WebSockets for content updates?** WebSockets keep a connection open, which is unnecessary for occasional updates.  
 - **Why not WebSub for chat apps?** WebSub is **one-way (push-only)** and works via HTTP requests, making it inefficient for instant messaging.
+
+### If the WebSocket connection starts immediately with `io()`, isn't it established before `useEffect` runs, so why does the `"connected!!"` message still appear in the console?
+
+```js
+const App = () => {
+  const socket = io("http://localhost:3000");
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected!!");
+    });
+  }, []);
+  return <div>App</div>;
+};
+```  
+
+
+`io("http://localhost:3000")` immediately initiates a WebSocket connection when the component renders. But since the connection takes some time (even if it’s very fast), `useEffect` runs almost immediately after the render, and `socket.on("connect", ...)` usually gets added before the `"connect"` event actually fires.  
+
+If the connection somehow happens **before** `useEffect` runs, the `"connect"` event might have already fired, and the listener won’t catch it. In such cases, use:  
+
+```js
+useEffect(() => {
+  if (socket.connected) {
+    console.log("connected!!");
+  } else {
+    socket.on("connect", () => {
+      console.log("connected!!");
+    });
+  }
+}, []);
+```  
+
+This ensures that even if the connection is already established, we still detect it.
