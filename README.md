@@ -107,6 +107,10 @@
   - When the payment is successful, Razorpay's server needs to notify **your backend**.
   - It sends an HTTP request (webhook) to your backend.
   - Your backend verifies the payment and updates the order status.
+  
+  you can say that when a Razorpay payment is successful, Razorpay sends the payment details and signature to your server’s endpoint. This endpoint is referred to as a webhook endpoint. A webhook is a process where one server communicates with another server after an event or operation occurs. It’s a pattern or mechanism used to send data between servers based on specific events.
+
+There’s no special syntax or setup required for webhooks, unlike WebSockets, where you need separate code for configuration. Webhooks are simply HTTP requests that happen after an event. Essentially, a webhook is an API call triggered after an operation.
 
 #### **Difference Between Polling & Webhooks**
 
