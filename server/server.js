@@ -24,11 +24,15 @@ const io = new Server(server, {
   },
 });
 
+console.log("start");
 io.on("connection", (socket) => {
   console.log("user connected");
   console.log("id ", socket.id);
   //to see how many clients connected
-  console.log(io.engine.clientsCount)
+  //   console.log(io.engine.clientsCount)
+  console.log(new Date().toLocaleTimeString(), new Date().getMilliseconds());
+
+  socket.emit("welcome", `welcome to the server ${socket.id}`);
 });
 
 //-----------------

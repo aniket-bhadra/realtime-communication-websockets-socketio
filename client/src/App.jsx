@@ -6,7 +6,14 @@ const App = () => {
   useEffect(() => {
     socket.on("connect", () => {
       console.log("connected!!", socket.id);
+      console.log(new Date().toLocaleTimeString(), new Date().getMilliseconds());
+
     });
+
+    socket.on("welcome", (s) => {
+      console.log(s);
+    });
+    console.log(new Date().toLocaleTimeString(), new Date().getMilliseconds());
   }, []);
   return <div>App</div>;
 };
