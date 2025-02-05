@@ -26,13 +26,25 @@ const io = new Server(server, {
 
 console.log("start");
 io.on("connection", (socket) => {
-  console.log("user connected");
-  console.log("id ", socket.id);
+  console.log("user connected ", socket.id);
   //to see how many clients connected
   //   console.log(io.engine.clientsCount)
-  console.log(new Date().toLocaleTimeString(), new Date().getMilliseconds());
 
   socket.emit("welcome", `welcome to the server ${socket.id}`);
+  socket.broadcast.emit("welcome", `${socket.id} joined the server`);
+
+  socket.on("message", ({ message, room }) => {
+    console.log(message);
+    //! test it to learn the difference
+    // socket.emit("receive-message", data);
+    // io.emit("receive-message", data);
+    // io.to(room).emit("receive-message", message);
+    socket.to(room).emit("receive-message", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`${socket.id} disconnected`);
+  });
 });
 
 //-----------------

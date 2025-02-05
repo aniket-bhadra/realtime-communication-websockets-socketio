@@ -213,6 +213,8 @@ Server-side: socket refers to each individual client connection.
 Client-side: The socket object refers to that particular client.
 
 meaning-So if 5 clients connect, then on the client-side, each `socket` instance refers to its own client. But on the server-side, the `connection` event will be triggered 5 separate times, meaning 5 separate callbacks will execute. Inside each callback, the `socket` object represents that particular client.
+so,
+On both client and server, socket.emit() sends events only for that specific client, and socket.on() listens for events only for that same client.
 
 ### Client-Side:
 ```js
