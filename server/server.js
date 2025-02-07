@@ -35,11 +35,18 @@ io.on("connection", (socket) => {
 
   socket.on("message", ({ message, room }) => {
     console.log(message);
-    //! test it to learn the difference
-    // socket.emit("receive-message", data);
-    // io.emit("receive-message", data);
+    //! uncomment one by one, to learn the difference
+    // socket.emit("receive-message", message);
+    // io.emit("receive-message", message);
+    // socket.broadcast.emit("receive-message", message);
     // io.to(room).emit("receive-message", message);
     socket.to(room).emit("receive-message", message);
+    //this means which ever socket is exist in this room, will get this "receive-message" event, means which every socket is exist in this rooom, in client side all of their "recieve-messge" event will triggger,
+  });
+  socket.on("join-room", (roomName) => {
+  //this means whichever socket requests for new room to join, with this,a room will be created with that user will be joining first in the room,
+    socket.join(roomName);
+    console.log(`user joined ${roomName}`)
   });
 
   socket.on("disconnect", () => {

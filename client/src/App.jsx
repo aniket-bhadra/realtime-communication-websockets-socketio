@@ -9,6 +9,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [room, setRoom] = useState("");
   const [socketId, setSocketId] = useState("");
+  const [roomName, setRoomName] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   useEffect(() => {
     socket.on("connect", () => {
@@ -21,24 +22,48 @@ const App = () => {
     });
     socket.on("receive-message", (data) => {
       // console.log(data);
-      setAllMessages((existingMsgs) => [data, existingMsgs]);
+      setAllMessages((existingMsgs) => [data, ...existingMsgs]);
     });
 
     return () => {
       socket.disconnect();
     };
   }, []);
+  // console.log(allMessages)
   const handleSubmit = async (e) => {
     e.preventDefault();
     socket.emit("message", { message, room });
     setMessage("");
+  };
+  const joinRoomHandler = (e) => {
+    e.preventDefault();
+    socket.emit("join-room", roomName);
+    setRoomName("");
   };
   return (
     <Container maxWidth="sm">
       <Typography variant="h6" component="div" gutterBottom>
         {socketId}
       </Typography>
-    
+      <form onSubmit={joinRoomHandler}>
+        <h5>join room</h5>
+        <TextField
+          id="outlined-basic"
+          label="RoomName"
+          variant="outlined"
+          value={roomName}
+          onChange={(e) => setRoomName(e.target.value)}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ marginLeft: "25px" }}
+        >
+          join
+        </Button>
+      </form>
+
       <form onSubmit={handleSubmit}>
         <TextField
           id="outlined-basic"
