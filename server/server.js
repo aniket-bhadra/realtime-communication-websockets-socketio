@@ -2,8 +2,10 @@ import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 
 const PORT = 3000;
+const secretKey = "jsoneosjeio56edt4";
 const app = express();
 app.use(
   cors({
@@ -12,6 +14,25 @@ app.use(
     credentials: true,
   })
 );
+
+app.get("/", (req, res) => {
+  res.send("api running successfully");
+});
+
+app.get("/login", (req, res) => {
+  const token = jwt.sign({ _id: "s1w4o5n7d8ai9opq373djowd" }, secretKey, {
+    expiresIn: "3d",
+  });
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    })
+    .json({
+      message: "Login Success",
+    });
+});
 
 //-----------------socket.io setup
 const server = createServer(app);
@@ -24,7 +45,12 @@ const io = new Server(server, {
   },
 });
 
-console.log("start");
+// console.log("start");
+const user = false;
+io.use((socket, next) => {
+  if (user) next();
+});
+
 io.on("connection", (socket) => {
   console.log("user connected ", socket.id);
   //to see how many clients connected
@@ -44,9 +70,9 @@ io.on("connection", (socket) => {
     //this means which ever socket is exist in this room, will get this "receive-message" event, means which every socket is exist in this rooom, in client side all of their "recieve-messge" event will triggger,
   });
   socket.on("join-room", (roomName) => {
-  //this means whichever socket requests for new room to join, with this,a room will be created with that user will be joining first in the room,
+    //this means whichever socket requests for new room to join, with this,a room will be created with that user will be joining first in the room,
     socket.join(roomName);
-    console.log(`user joined ${roomName}`)
+    console.log(`user joined ${roomName}`);
   });
 
   socket.on("disconnect", () => {
