@@ -46,10 +46,12 @@ const io = new Server(server, {
 });
 
 // console.log("start");
-const user = false;
-io.use((socket, next) => {
-  if (user) next();
-});
+//verify the user hre with jwt,cookie, 
+// const user = false;
+// io.use((socket, next) => {
+//   if (user) next();
+//   else next(error);
+// });
 
 io.on("connection", (socket) => {
   console.log("user connected ", socket.id);
@@ -66,8 +68,8 @@ io.on("connection", (socket) => {
     // io.emit("receive-message", message);
     // socket.broadcast.emit("receive-message", message);
     // io.to(room).emit("receive-message", message);
-    socket.to(room).emit("receive-message", message);
-    //this means which ever socket is exist in this room, will get this "receive-message" event, means which every socket is exist in this rooom, in client side all of their "recieve-messge" event will triggger,
+    io.to(room).emit("receive-message", message);
+    //this means which ever socket is exist in this room, will get this "receive-message" event, means which every socket is exist in this rooom, in client side all of their "recieve-messge" event will triggger, 
   });
   socket.on("join-room", (roomName) => {
     //this means whichever socket requests for new room to join, with this,a room will be created with that user will be joining first in the room,
