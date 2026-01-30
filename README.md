@@ -1,5 +1,39 @@
 # WebSocket & Real-Time Communication Guide
 
+## Table of Contents
+
+1. [HTTP and Polling](#1-http-and-polling)
+   - [Polling (Short Polling)](#polling-short-polling)
+   - [HTTP Overhead](#http-overhead)
+2. [HTTP Long Polling](#2-http-long-polling)
+3. [WebSockets](#3-websockets)
+   - [Advantages of WebSockets](#advantages-of-websockets)
+   - [Bidirectional Protocol](#bidirectional-protocol)
+   - [WebSocket Handshake](#websocket-handshake)
+   - [WebSocket Events](#websocket-events)
+4. [WebRTC vs. WebSockets](#4-webrtc-vs-websockets)
+5. [Webhooks](#5-webhooks)
+   - [Difference Between Polling & Webhooks](#difference-between-polling--webhooks)
+   - [Security in Webhooks](#security-in-webhooks)
+6. [Socket.io vs. WebSockets](#6-socketio-vs-websockets)
+7. [PubSubHubbub (WebSub)](#pubsubhubbub-websub)
+8. [Socket.IO: Learning Notes](#socketio-my-learning-notes)
+   - [Basics of Socket.IO](#basics-of-socketio)
+   - [Emitting and Listening to Events](#emitting-and-listening-to-events)
+   - [Connection Timing and Event Listeners](#connection-timing-and-event-listeners)
+   - [Understanding Client and Server Socket Objects](#understanding-client-and-server-socket-objects)
+   - [Private Messaging in Socket.IO](#private-messaging-in-socketio)
+   - [Room Management](#room-management)
+   - [Emitting Messages in Rooms](#emitting-messages-in-rooms)
+   - [Joining Rooms](#joining-rooms)
+   - [Socket.IO Event Handling](#socketio-event-handling)
+   - [socket.off() vs socket.on("disconnect")](#socketoff-vs-socketondisconnect)
+   - [Difference Between socket.in(), socket.to(), and io.to()](#difference-between-socketin-socketto-and-ioto)
+   - [Middleware in Socket.IO](#middleware-in-socketio)
+9. [Final Summary](#final-summary)
+
+---
+
 ## 1. HTTP and Polling
 
 - **HTTP** (HyperText Transfer Protocol) is the standard protocol used for communication between clients (browsers, mobile apps) and servers over the internet.
